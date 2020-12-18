@@ -8,6 +8,7 @@ class Townships extends Model
 {
 
     protected $table = 'Townships';
+    public $timestamps = false;
 
     protected $fillable = [
         'TownshipID', 

@@ -9,7 +9,8 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Packages;
 use App\Http\Resources\Package as PackageResource;
-
+use App\Models\PackageNotes;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\ModelNotFoundException;  
 
 class PackageController extends Controller
@@ -34,7 +35,7 @@ class PackageController extends Controller
         try {
             $package = Packages::where('PackageID', $id)
                         ->firstOrFail();
-            return response()->json($package);
+            return response()->json(new PackageResource($package));
         } catch (ModelNotFoundException $e){
             return response()->json(['error' => 'Id de paquete no encontrado'], 400);
         }
@@ -42,13 +43,26 @@ class PackageController extends Controller
 
     public function editPackage(Request $request, int $id) : Response {
 
+        $packageNotes = $request->only(['status', 'note']);
+        
         try {
-            $user = User::where('UserName', $request->username)
-                        ->where('UserPassword',md5($request->password))
+            $package = Packages::where('PackageID', $id)
                         ->firstOrFail();
-            return response()->json($user);
+
+            DB::table('Packages')
+                        ->where('PackageID', $id)
+                        ->update(['Status' => $packageNotes['status']]);
+            
+            PackageNotes::create([
+                'NewStatus' => $packageNotes['status'],
+                'Note' => $packageNotes['note'],
+                'LogDate' => Carbon::now()->toDateString(),
+                'PackageID' => $id,
+            ]);
+
+            return response()->json(new PackageResource($package));
         } catch (ModelNotFoundException $e){
-            return response()->json(['error' => 'Usuario y clave no coinciden'], 400);
+            return response()->json(['error' => 'Id de paquete no encontrado'], 400);
         }
     }
 }

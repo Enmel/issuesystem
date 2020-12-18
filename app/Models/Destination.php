@@ -8,6 +8,7 @@ class Destination extends Model
 {
 
     protected $table = 'Destinations';
+    public $timestamps = false;
 
     protected $fillable = [
         'DestinationID', 

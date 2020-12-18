@@ -8,6 +8,8 @@ class Packages extends Model
 {
 
     protected $table = 'Packages';
+    protected $primaryKey = 'PackageID';
+    public $timestamps = false;
 
     protected $fillable = [
         'PackageID', 

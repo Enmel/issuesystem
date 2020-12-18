@@ -8,6 +8,7 @@ class Client extends Model
 {
 
     protected $table = 'Clients';
+    public $timestamps = false;
 
     protected $fillable = [
         'PackageID', 

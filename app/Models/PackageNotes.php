@@ -8,6 +8,7 @@ class PackageNotes extends Model
 {
 
     protected $table = 'PackagesNotes';
+    public $timestamps = false;
 
     protected $fillable = [
         'PackageNoteID', 

@@ -8,6 +8,7 @@ class Status extends Model
 {
 
     protected $table = 'Status';
+    public $timestamps = false;
 
     protected $fillable = [
         'StatusID', 
