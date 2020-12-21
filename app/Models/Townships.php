@@ -16,4 +16,9 @@ class Townships extends Model
         'DepartmentID',
         'Code'
     ];
+
+    function Department()
+    {
+        return $this->belongsTo(Departments::class, 'DepartmentID', 'DepartmentID');
+    }
 };

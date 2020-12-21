@@ -13,6 +13,31 @@ class Package extends JsonResource
     public function toArray($request)
     {
 
+        $deliveryInfo = [
+            'address' => $this->DeliveryAddress
+        ];
+
+        if($this->Destination) {
+
+            $destination = $this->Destination->toArray();
+            $deliveryInfo = [
+                'deliveryDate' => $this->DeliveryDate,
+                'department' => [
+                    'name' => $destination['township']['department']['Name'],
+                    'code' => $destination['township']['department']['Code'],
+                ],
+                'township' => [
+                    'name' => $destination['township']['Name'],
+                    'code' => $destination['township']['Code'],
+                ],
+                'destination' => [
+                    'name' => $destination['Name'],
+                    'code' => $destination['Code']
+                ],
+                'address' => $this->DeliveryAddress
+            ];
+        }
+
         return [
             'id' => $this->PackageID,
             'guideNumber' => $this->GuideNumber,
@@ -22,9 +47,7 @@ class Package extends JsonResource
             'client' => new ClientResource($this->Client),
             'order' => $this->Organize,
             'price' => $this->Price,
-            'deliveryInfo' => [
-                'address' => $this->DeliveryAddress,
-            ],
+            'deliveryInfo' => $deliveryInfo,
             'status' => new StatusResource($this->StatusData),
             'notes' => NotesResource::collection($this->Notes),
             'auditDate' => $this->AuditDate,

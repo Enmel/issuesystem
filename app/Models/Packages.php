@@ -24,6 +24,7 @@ class Packages extends Model
         'Price',
         'Status',
         'AuditDate',
+        'DeliveryDate',
         'Username'
     ];
 
@@ -44,6 +45,6 @@ class Packages extends Model
 
     public function Destination()
     {
-        return $this->hasOne(Destination::class, 'DestinationID', 'DestinationID');
+        return $this->hasOne(Destination::class, 'DestinationID', 'DestinationID')->with('Township.Department');
     }
 }

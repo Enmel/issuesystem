@@ -16,17 +16,23 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class PackageController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function toDeliverToday(Request $request) : Response {
 
         $user = Auth::user();
 
         try {
             $packages = Packages::where('UserName', $user->UserName)
-                        ->whereDate('AuditDate', '>=', Carbon::now())
+                        ->whereNotIn('Status', ['E', 'R', 'SA'])
+                        ->whereDate('DeliveryDate', '>=', Carbon::now())
                         ->get();
             return response()->json(PackageResource::collection($packages));
-        } catch (ModelNotFoundException $e){
-            return response()->json(['error' => 'Usuario y clave no coinciden'], 400);
+        } catch (\Exception $e){
+            return response()->json(['error' => $e->getMessage()], 400);
         }
     }
 
@@ -64,5 +70,9 @@ class PackageController extends Controller
         } catch (ModelNotFoundException $e){
             return response()->json(['error' => 'Id de paquete no encontrado'], 400);
         }
+    }
+
+    public function chargedToday (Request $request): Response {
+
     }
 }
