@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse as Response;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-use App\Models\User;
 use App\Models\Packages;
 use App\Http\Resources\Package as PackageResource;
+use App\Http\Resources\ChargedToday as ChargedTodayResource;
 use App\Models\PackageNotes;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\ModelNotFoundException;  
@@ -55,9 +55,15 @@ class PackageController extends Controller
             $package = Packages::where('PackageID', $id)
                         ->firstOrFail();
 
-            DB::table('Packages')
+            if($packageNotes['status'] === "E"){
+                DB::table('Packages')
+                        ->where('PackageID', $id)
+                        ->update(['Status' => $packageNotes['status'], 'DeliveryDate' => Carbon::now()]);
+            }else{
+                DB::table('Packages')
                         ->where('PackageID', $id)
                         ->update(['Status' => $packageNotes['status']]);
+            }
             
             PackageNotes::create([
                 'NewStatus' => $packageNotes['status'],
@@ -72,7 +78,41 @@ class PackageController extends Controller
         }
     }
 
-    public function chargedToday (Request $request): Response {
+    public function chargedToday(Request $request): Response {
 
+        $user = Auth::user();
+
+        try {
+            $packages = Packages::where('UserName', $user->UserName)
+                        ->whereIn('Status', ['E'])
+                        ->whereDate('DeliveryDate', '=', Carbon::now())
+                        ->get();
+            return response()->json(new ChargedTodayResource(PackageResource::collection($packages)));
+        } catch (\Exception $e){
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
+    }
+
+    public function personalOrder(Request $request): Response {
+        
+        $user = Auth::user();
+        
+        $orders = $request->input('packages');
+
+        try {
+
+            DB::beginTransaction();
+            foreach ($orders as $order) {
+                $package = Packages::where('PackageID', $order['id'])->firstOrFail();
+                $package->update(['Organize' => $order['order']]);
+            }
+            DB::commit();
+            return response()->json();
+        } catch (ModelNotFoundException $e){
+            DB::rollBack();
+            return response()->json(['error' => 'Id de paquete no encontrado'], 400);
+        } catch (\Exception $e){
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
     }
 }
