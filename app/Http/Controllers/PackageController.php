@@ -49,7 +49,7 @@ class PackageController extends Controller
 
     public function editPackage(Request $request, int $id) : Response {
 
-        $packageNotes = $request->only(['status', 'note']);
+        $packageNotes = $request->only(['status', 'note', 'date']);
         
         try {
             $package = Packages::where('PackageID', $id)
@@ -60,9 +60,16 @@ class PackageController extends Controller
                         ->where('PackageID', $id)
                         ->update(['Status' => $packageNotes['status'], 'DeliveryDate' => Carbon::now()]);
             }else{
+
+                $update = ['Status' => $packageNotes['status']];
+                
+                if($packageNotes['date']){
+                    $update['DeliveryDate'] = $packageNotes['date'];
+                }
+
                 DB::table('Packages')
                         ->where('PackageID', $id)
-                        ->update(['Status' => $packageNotes['status']]);
+                        ->update($update);
             }
             
             PackageNotes::create([

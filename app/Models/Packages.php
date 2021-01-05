@@ -19,6 +19,7 @@ class Packages extends Model
         'Weight',
         'ClientID',
         'Organize',
+        'ReceiverName',
         'DeliveryAddress',
         'DestinationID',
         'Price',
