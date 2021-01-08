@@ -34,7 +34,8 @@ class Package extends JsonResource
                     'name' => $destination['Name'],
                     'code' => $destination['Code']
                 ],
-                'address' => $this->DeliveryAddress
+                'address' => $this->DeliveryAddress,
+                'observations' => $this->Observations
             ];
         }
 
