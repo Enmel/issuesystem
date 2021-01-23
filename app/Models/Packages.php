@@ -27,7 +27,9 @@ class Packages extends Model
         'AuditDate',
         'DeliveryDate',
         'Username',
-        'Observations'
+        'Observations',
+        'PhoneNumber',
+        'PhoneNumber2'
     ];
 
     public function StatusData()

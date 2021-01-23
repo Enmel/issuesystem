@@ -47,6 +47,10 @@ class Package extends JsonResource
             'weight' => $this->Weight,
             'client' => new ClientResource($this->Client),
             'receptor' => $this->ReceiverName,
+            'receptorPhone' => [
+                'phoneNumber1' => $this->PhoneNumber,
+                'phoneNumber2' => $this->PhoneNumber2
+            ],
             'order' => $this->Organize,
             'price' => $this->Price,
             'deliveryInfo' => $deliveryInfo,
