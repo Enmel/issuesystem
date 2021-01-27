@@ -25,10 +25,11 @@ class PackageController extends Controller
 
         $user = Auth::user();
 
+        var_dump(Carbon::today());exit;
         try {
             $packages = Packages::where('UserName', $user->UserName)
                         ->whereNotIn('Status', ['E', 'R', 'SA'])
-                        ->whereDate('DeliveryDate', '>=', Carbon::now())
+                        ->whereDate('DeliveryDate', '>=', Carbon::today())
                         ->get();
             return response()->json(PackageResource::collection($packages));
         } catch (\Exception $e){
