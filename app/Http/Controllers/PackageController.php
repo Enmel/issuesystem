@@ -36,6 +36,20 @@ class PackageController extends Controller
         }
     }
 
+    public function rejected(Request $request) : Response {
+
+        $user = Auth::user();
+
+        try {
+            $packages = Packages::where('UserName', $user->UserName)
+                        ->whereIn('Status', ['R'])
+                        ->get();
+            return response()->json(PackageResource::collection($packages));
+        } catch (\Exception $e){
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
+    }
+
     public function findByID(Request $request, int $id) : Response {
 
         try {
