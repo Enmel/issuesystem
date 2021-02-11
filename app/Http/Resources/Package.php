@@ -14,7 +14,8 @@ class Package extends JsonResource
     {
 
         $deliveryInfo = [
-            'address' => $this->DeliveryAddress
+            'address' => $this->DeliveryAddress,
+            'deliveryDate' => $this->DeliveryDate
         ];
 
         if($this->Destination) {
