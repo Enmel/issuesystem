@@ -16,7 +16,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $table = 'UserAccount';
 
     protected $fillable = [
-        'UserName', 'ApiToken',
+        'UserName', 'ApiToken', 'TypeUser'
     ];
 
     /**
@@ -27,4 +27,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $hidden = [
         'UserPassword',
     ];
+
+    public function Type()
+    {
+        return $this->hasOne(TypeUser::class, 'TypeUsersID', 'TypeUser');
+    }
+
+    public function Role()
+    {
+        return $this->hasOne(RoleByUser::class, 'UserName', 'UserName');
+    }
 }
