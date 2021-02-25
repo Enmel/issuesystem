@@ -4,7 +4,7 @@ namespace Modules\WithdrawalSchedule;
 
 class Time
 {
-    public string $value;
+    public $value;
 
     public function __construct(String $timeString)
     {
