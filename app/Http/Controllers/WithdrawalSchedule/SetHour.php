@@ -16,7 +16,7 @@ class SetHour extends Controller
         $this->middleware('auth');
     }
 
-    public function __invoke(Request $request, string $withdrawalSchedule, SetWithdrawalHour $setWithdrawalHour)
+    public function __invoke(Request $request, $withdrawalSchedule, SetWithdrawalHour $setWithdrawalHour)
     {
         $withdrawalSchedule = WithdrawalSchedule::findOrFail($withdrawalSchedule);
         $time = new Time($request->time);
