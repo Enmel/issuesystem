@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse as Response;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Models\Packages;
+use App\Models\WithdrawalSchedule;
 use App\Http\Resources\Package as PackageResource;
 use App\Http\Resources\ChargedToday as ChargedTodayResource;
 use App\Models\PackageNotes;
@@ -27,9 +28,43 @@ class PackageController extends Controller
 
         try {
             $packages = Packages::where('UserName', $user->UserName)
-                        ->whereNotIn('Status', ['E', 'R', 'SA'])
+                        ->whereNotIn('Status', ['E', 'R', 'SA', 'EB', 'ER', 'ER2'])
                         ->whereDate('DeliveryDate', '>=', Carbon::today())
                         ->get();
+            return response()->json(PackageResource::collection($packages));
+        } catch (\Exception $e){
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
+    }
+
+    public function listPackages(Request $request) : Response {
+
+        $user = Auth::user();
+        $status = $request->input('status');
+        $clientID = $request->input('clientID');
+
+        try {
+
+            $packages = Packages::all()
+                        ->when($status, function ($query, $status) {
+                            return $query->where('Status', $status);
+                        })
+                        ->when($clientID, function ($query, $status) {
+                            return $query->where('ClientID', $status);
+                        });
+            return response()->json(PackageResource::collection($packages));
+        } catch (\Exception $e){
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
+    }
+
+    public function listPackagesRecolector(Request $request) : Response {
+
+        $clientID = $request->input('clientID', 0);
+
+        try {
+
+            $packages = Packages::whereIn('Status', ['SA', 'PRR'])->where('clientID', $clientID)->get();
             return response()->json(PackageResource::collection($packages));
         } catch (\Exception $e){
             return response()->json(['error' => $e->getMessage()], 400);
@@ -73,6 +108,23 @@ class PackageController extends Controller
                 DB::table('Packages')
                         ->where('PackageID', $id)
                         ->update(['Status' => $packageNotes['status'], 'DeliveryDate' => Carbon::now()]);
+            }elseif($packageNotes['status'] === "ER"){
+                
+                $WithdrawalSchedule = WithdrawalSchedule::where('ClientID', $package->ClientID)->where('Status', 'W-P')->get();
+                
+                $packages = Packages::where(['ClientID' => $package->ClientID, 'UserName' => $package->UserName])
+                ->whereIn('Status', ['SA', 'PRR']);
+
+                if((!$WithdrawalSchedule->isEmpty()) && $packages->count() < 1){
+                    $WithdrawalSchedule = $WithdrawalSchedule->first();
+                    $WithdrawalSchedule->Status = 'W-R';
+                    $WithdrawalSchedule->save();
+                }
+
+                DB::table('Packages')
+                        ->where('PackageID', $id)
+                        ->update(['Status' => $packageNotes['status']]);
+
             }else{
 
                 $update = ['Status' => $packageNotes['status']];
@@ -88,7 +140,7 @@ class PackageController extends Controller
             
             PackageNotes::create([
                 'NewStatus' => $packageNotes['status'],
-                'Note' => $packageNotes['note'],
+                'Note' => $packageNotes['note'] ?? '',
                 'LogDate' => Carbon::now()->toDateString(),
                 'PackageID' => $id,
             ]);

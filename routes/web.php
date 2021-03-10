@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 $router->post('users/login', 'UserController@login');
 
 //? Packages
+$router->get('packages', 'PackageController@listPackages');
+$router->get('packages/recolector', 'PackageController@listPackagesRecolector');
 $router->get('packages/today', 'PackageController@toDeliverToday');
 $router->get('packages/rejected', 'PackageController@rejected');
 $router->get('packages/charged', 'PackageController@chargedToday');
