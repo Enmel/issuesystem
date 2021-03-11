@@ -125,6 +125,23 @@ class PackageController extends Controller
                         ->where('PackageID', $id)
                         ->update(['Status' => $packageNotes['status']]);
 
+            }elseif($packageNotes['status'] === 'ER'){
+        
+                $WithdrawalSchedule = WithdrawalSchedule::where('ClientID', $package->ClientID)->where('Status', 'W-R')->get();
+                
+                $packages = Packages::where(['ClientID' => $package->ClientID, 'UserName' => $package->UserName])
+                ->where('Status', 'ER');
+
+                if((!$WithdrawalSchedule->isEmpty()) && $packages->count() < 1){
+                    $WithdrawalSchedule = $WithdrawalSchedule->first();
+                    $WithdrawalSchedule->Status = 'W-C';
+                    $WithdrawalSchedule->save();
+                }
+
+                DB::table('Packages')
+                        ->where('PackageID', $id)
+                        ->update(['Status' => $packageNotes['status']]);
+
             }else{
 
                 $update = ['Status' => $packageNotes['status']];
