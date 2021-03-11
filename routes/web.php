@@ -17,3 +17,6 @@ $router->patch('packages/{id}', 'PackageController@editPackage');
 //? WithdrawalSchedule
 Route::get('withdrawalschedule', WithdrawalSchedule\Show::class);
 Route::patch('withdrawalschedule/{withdrawalSchedule}', WithdrawalSchedule\SetHour::class);
+
+//? Collector
+Route::get('collector', Collector\ListPendingPackages::class);
