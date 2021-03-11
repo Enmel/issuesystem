@@ -30,6 +30,11 @@ class WithdrawalSchedule extends Model
         return $this->hasOne(Client::class, 'ClientID', 'ClientID');
     }
 
+    public function Packages()
+    {
+        return $this->hasMany(WithdrawalSchedule::class, 'ClientID', 'ClientID');
+    }
+
     public function getRouteKeyName()
     {
         return 'WithdrawalScheduleID';
