@@ -125,7 +125,7 @@ class PackageController extends Controller
                         ->where('PackageID', $id)
                         ->update(['Status' => $packageNotes['status']]);
 
-            }elseif($packageNotes['status'] === 'ER'){
+            }elseif($packageNotes['status'] === 'EB'){
         
                 $WithdrawalSchedule = WithdrawalSchedule::where('ClientID', $package->ClientID)->where('Status', 'W-R')->get();
                 
