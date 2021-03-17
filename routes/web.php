@@ -23,3 +23,6 @@ Route::get('collector', Collector\ListPendingPackages::class);
 
 //? Depositary
 Route::get('depositary', Depositary\ListPendingPackages::class);
+
+//? PanelCollector
+Route::get('panelcollector', PanelCollector\ListPendingPackages::class);

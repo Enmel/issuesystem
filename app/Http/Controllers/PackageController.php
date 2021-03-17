@@ -142,6 +142,11 @@ class PackageController extends Controller
                         ->where('PackageID', $id)
                         ->update(['Status' => $packageNotes['status']]);
 
+            }elseif($packageNotes['status'] === 'ER2'){
+                DB::table('Packages')
+                        ->where('PackageID', $id)
+                        ->update(['Status' => $packageNotes['status']]);
+
             }else{
 
                 $update = ['Status' => $packageNotes['status']];
