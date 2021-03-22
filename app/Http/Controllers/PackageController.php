@@ -101,7 +101,7 @@ class PackageController extends Controller
         $packageNotes = $request->only(['status', 'note', 'date']);
         
         try {
-            $package = Packages::where('PackageID', $id)
+            $package = Packages::where('GuideNumber', $id)
                         ->firstOrFail();
 
             if($packageNotes['status'] === "E"){
