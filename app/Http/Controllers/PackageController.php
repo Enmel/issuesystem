@@ -167,7 +167,7 @@ class PackageController extends Controller
             }elseif($packageNotes['status'] === 'I01'){
                 DB::table('Packages')
                         ->where('PackageID', $id)
-                        ->update(['Status' => $packageNotes['status'], 'UserName' => $user->UserName]);
+                        ->update(['Status' => $packageNotes['status'], 'UserName' => $user->UserName, 'DeliveryDate' => $packageNotes['date']]);
             }else{
 
                 $update = ['Status' => $packageNotes['status']];
