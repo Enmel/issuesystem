@@ -23,17 +23,24 @@ class ListDepositaryPackages extends Job
         $packagesByClient = $packages->groupBy('ClientID');
         $withdrawalSchedule = WithdrawalSchedule::where('Status', 'W-R')->whereIn('ClientID', $clients)->get()->groupBy('ClientID');
 
-        $cosas = $packagesByClient->map(function($item, $key) use ($withdrawalSchedule) {
+        $cosas = [];
 
+        foreach ($packagesByClient as $key => $item) {
+            
             $lastWithdrawal = collect($withdrawalSchedule->get($key))->last();
+
+            if(empty($lastWithdrawal)){
+                continue;
+            }
+
             $collector = $lastWithdrawal->UserName;
 
-            return [
+            $cosas[] = [
                 'collector' => $collector,
                 'packages' => PackageResource::collection($item),
             ];
-        });
+        }
         
-        return $cosas->values();
+        return $cosas;
     }
 }
