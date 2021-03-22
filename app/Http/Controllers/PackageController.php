@@ -86,7 +86,7 @@ class PackageController extends Controller
         }
     }
 
-    public function findByID(Request $request, int $id) : Response {
+    public function findByID(Request $request, string $id) : Response {
 
         try {
             $package = Packages::where('GuideNumber', $id)
@@ -97,7 +97,7 @@ class PackageController extends Controller
         }
     }
 
-    public function editPackage(Request $request, int $id) : Response {
+    public function editPackage(Request $request, string $id) : Response {
 
         $user = Auth::user();
         $packageNotes = $request->only(['status', 'note', 'date']);
