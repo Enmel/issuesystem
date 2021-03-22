@@ -12,7 +12,8 @@ use App\Http\Resources\Package as PackageResource;
 use App\Http\Resources\ChargedToday as ChargedTodayResource;
 use App\Models\PackageNotes;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\ModelNotFoundException;  
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use phpDocumentor\Reflection\Types\Null_;
 
 class PackageController extends Controller
 {
@@ -98,16 +99,25 @@ class PackageController extends Controller
 
     public function editPackage(Request $request, int $id) : Response {
 
+        $user = Auth::user();
         $packageNotes = $request->only(['status', 'note', 'date']);
         
         try {
             $package = Packages::where('GuideNumber', $id)
                         ->firstOrFail();
 
+            $oldStatus = $package->Status;
+
             if($packageNotes['status'] === "E"){
                 DB::table('Packages')
                         ->where('PackageID', $id)
                         ->update(['Status' => $packageNotes['status'], 'DeliveryDate' => Carbon::now()]);
+            }elseif($packageNotes['status'] === "ER" && $oldStatus === "IO1"){
+
+                DB::table('Packages')
+                        ->where('PackageID', $id)
+                        ->update(['Status' => $packageNotes['status'], 'UserName' => NULL]);
+
             }elseif($packageNotes['status'] === "ER"){
                 
                 $WithdrawalSchedule = WithdrawalSchedule::where('ClientID', $package->ClientID)->where('Status', 'W-P')->get();
@@ -124,6 +134,12 @@ class PackageController extends Controller
                 DB::table('Packages')
                         ->where('PackageID', $id)
                         ->update(['Status' => $packageNotes['status']]);
+
+            }elseif($packageNotes['status'] === 'EB' && $oldStatus === "IO1"){
+        
+                DB::table('Packages')
+                        ->where('PackageID', $id)
+                        ->update(['Status' => $packageNotes['status'], 'UserName' => NULL]);
 
             }elseif($packageNotes['status'] === 'EB'){
         
@@ -147,6 +163,10 @@ class PackageController extends Controller
                         ->where('PackageID', $id)
                         ->update(['Status' => $packageNotes['status']]);
 
+            }elseif($packageNotes['status'] === 'I01'){
+                DB::table('Packages')
+                        ->where('PackageID', $id)
+                        ->update(['Status' => $packageNotes['status'], 'UserName' => $user->UserName]);
             }else{
 
                 $update = ['Status' => $packageNotes['status']];
@@ -161,7 +181,9 @@ class PackageController extends Controller
             }
             
             PackageNotes::create([
+                'Executor' => $user->UserName,
                 'NewStatus' => $packageNotes['status'],
+                'OldStatus' => $oldStatus,
                 'Note' => $packageNotes['note'] ?? '',
                 'LogDate' => Carbon::now()->toDateString(),
                 'PackageID' => $id,
