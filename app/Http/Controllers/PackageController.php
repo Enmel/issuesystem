@@ -89,7 +89,7 @@ class PackageController extends Controller
     public function findByID(Request $request, int $id) : Response {
 
         try {
-            $package = Packages::where('PackageID', $id)
+            $package = Packages::where('GuideNumber', $id)
                         ->firstOrFail();
             return response()->json(new PackageResource($package));
         } catch (ModelNotFoundException $e){
