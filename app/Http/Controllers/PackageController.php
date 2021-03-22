@@ -106,6 +106,7 @@ class PackageController extends Controller
             $package = Packages::where('GuideNumber', $id)
                         ->firstOrFail();
 
+            $id = $package->PackageID;
             $oldStatus = $package->Status;
 
             if($packageNotes['status'] === "E"){
