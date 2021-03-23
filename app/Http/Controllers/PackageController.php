@@ -121,12 +121,13 @@ class PackageController extends Controller
 
             }elseif($packageNotes['status'] === "ER"){
                 
+
                 $WithdrawalSchedule = WithdrawalSchedule::where('ClientID', $package->ClientID)->where('Status', 'W-P')->get();
                 
                 $packages = Packages::where(['ClientID' => $package->ClientID, 'UserName' => $package->UserName])
                 ->whereIn('Status', ['SA', 'PRR']);
 
-                if((!$WithdrawalSchedule->isEmpty()) && $packages->count() < 1){
+                if((!$WithdrawalSchedule->isEmpty()) && $packages->count() <= 1){
                     $WithdrawalSchedule = $WithdrawalSchedule->first();
                     $WithdrawalSchedule->Status = 'W-R';
                     $WithdrawalSchedule->save();
@@ -149,7 +150,7 @@ class PackageController extends Controller
                 $packages = Packages::where(['ClientID' => $package->ClientID, 'UserName' => $package->UserName])
                 ->where('Status', 'ER');
 
-                if((!$WithdrawalSchedule->isEmpty()) && $packages->count() < 1){
+                if((!$WithdrawalSchedule->isEmpty()) && $packages->count() <= 1){
                     $WithdrawalSchedule = $WithdrawalSchedule->first();
                     $WithdrawalSchedule->Status = 'W-C';
                     $WithdrawalSchedule->save();
