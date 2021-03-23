@@ -9,7 +9,10 @@ class User extends JsonResource
     public function toArray($request)
     {
 
+        $deparments = collect($this->Destination)->pluck("destination.township.department.Name")->unique();
+
         return [
+            'deparments' => $deparments,
             'accountID' => $this->AccountID,
             'username' => $this->UserName,
             'type' => [
