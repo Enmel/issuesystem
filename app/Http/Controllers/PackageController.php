@@ -171,7 +171,9 @@ class PackageController extends Controller
                         ->update(['Status' => $packageNotes['status'], 'UserName' => $user->UserName, 'DeliveryDate' => $packageNotes['date']]);
             }elseif($packageNotes['status'] === 'BACK'){
 
-                $lastNote = $package->Notes->last();
+                $count = $package->Notes->last();
+                $index = $count > 1? $count - 1: 0;
+                $lastNote = $package->Notes->get($index);
                 $packageNotes['status'] = $lastNote->NewStatus;
 
                 DB::table('Packages')
