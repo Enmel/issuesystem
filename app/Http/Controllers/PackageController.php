@@ -172,7 +172,7 @@ class PackageController extends Controller
             }elseif($packageNotes['status'] === 'BACK'){
 
                 $count = $package->Notes->count();
-                $index = $count > 1? $count - 1: 0;
+                $index = $count > 1? ($count - 2): 0;
                 $lastNote = $package->Notes->get($index);
                 $packageNotes['status'] = $lastNote->NewStatus;
 
