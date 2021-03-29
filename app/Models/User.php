@@ -35,7 +35,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public function Role()
     {
-        return $this->hasOne(RoleByUser::class, 'UserName', 'UserName');
+        return $this->hasMany(RoleByUser::class, 'UserName', 'UserName');
     }
 
     public function Destination()
