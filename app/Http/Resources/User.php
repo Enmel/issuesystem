@@ -19,7 +19,7 @@ class User extends JsonResource
                 'name' => $this->Type->Name,
                 'id' => $this->Type->TypeUsersID
             ],
-            'roles' => $this->Role,
+            'roles' => Role::collection($this->Role),
             'photoUrl' => $this->PhotoUrl ?? "https://ui-avatars.com/api/?background=random&name={$this->UserName}",
             'isActive' => (bool) $this->isActive,
             'apiToken' => $this->apiToken,
