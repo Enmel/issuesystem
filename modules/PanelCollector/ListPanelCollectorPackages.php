@@ -20,9 +20,18 @@ class ListPanelCollectorPackages extends Job
     {
         $packages = Packages::whereIn('Status', ['EB', 'ER2'])->with('Destination')->get();
         $packagesGroupedByDepartment = $packages->groupBy('destination.township.department.DepartmentID');
-        
-        $result = $packagesGroupedByDepartment->map(function($item, $deparmentID) {
-            return [
+
+        $deparmentsIDs = collect($user->Destination)->pluck("destination.township.department.DepartmentID")->unique()->all();
+
+        $result = [];
+
+        foreach ($packagesGroupedByDepartment as $deparmentID => $item) {
+
+            if(!in_array($deparmentID, $deparmentsIDs)){
+                continue;
+            }
+
+            $result[] = [
                 'department' => [
                     'id' => $deparmentID,
                     'name' => $item[0]['destination']['township']['department']['Name'],
@@ -30,8 +39,8 @@ class ListPanelCollectorPackages extends Job
                 ],
                 'packages' => PackageResource::collection($item),
             ];
-        });
+        }
 
-        return $result->values();
+        return $result;
     }
 }
