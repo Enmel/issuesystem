@@ -201,6 +201,8 @@ class PackageController extends Controller
                 'PackageID' => $id,
             ]);
 
+            $package = Packages::where('GuideNumber', $id)
+                        ->firstOrFail();
             return response()->json(new PackageResource($package));
         } catch (ModelNotFoundException $e){
             return response()->json(['error' => 'Id de paquete no encontrado'], 400);
