@@ -81,6 +81,7 @@ class PackageController extends Controller
                         ->whereIn('Status', ['R'])
                         ->with('Notes')
                         ->get();
+                        
             return response()->json(PackageResource::collection($packages));
         } catch (\Exception $e){
             return response()->json(['error' => $e->getMessage()], 400);

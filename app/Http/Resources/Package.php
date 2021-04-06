@@ -56,7 +56,7 @@ class Package extends JsonResource
             'price' => $this->Price,
             'deliveryInfo' => $deliveryInfo,
             'status' => new StatusResource($this->StatusData),
-            'notes' => NotesResource::collection($this->whenLoaded('notes')),
+            'notes' => NotesResource::collection($this->whenLoaded('Notes')),
             'auditDate' => $this->AuditDate,
             'deliveryman' => $this->UserName
         ];
