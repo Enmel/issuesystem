@@ -79,6 +79,7 @@ class PackageController extends Controller
         try {
             $packages = Packages::where('UserName', $user->UserName)
                         ->whereIn('Status', ['R'])
+                        ->with('Notes')
                         ->get();
             return response()->json(PackageResource::collection($packages));
         } catch (\Exception $e){
