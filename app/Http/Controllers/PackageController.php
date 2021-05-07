@@ -30,7 +30,6 @@ class PackageController extends Controller
         try {
             $packages = Packages::where('UserName', $user->UserName)
                         ->whereNotIn('Status', ['E', 'R', 'SA', 'EB', 'ER', 'ER2'])
-                        ->whereDate('DeliveryDate', '>=', Carbon::today())
                         ->get();
             return response()->json(PackageResource::collection($packages));
         } catch (\Exception $e){
