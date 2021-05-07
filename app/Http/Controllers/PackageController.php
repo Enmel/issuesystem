@@ -125,13 +125,24 @@ class PackageController extends Controller
 
                 $WithdrawalSchedule = WithdrawalSchedule::where('ClientID', $package->ClientID)->where('Status', 'W-P')->get();
                 
-                $packages = Packages::where(['ClientID' => $package->ClientID, 'UserName' => $package->UserName])
+                $packages = Packages::where(['ClientID' => $package->ClientID])
                 ->whereIn('Status', ['SA', 'PRR']);
 
                 if((!$WithdrawalSchedule->isEmpty()) && $packages->count() <= 1){
                     $WithdrawalSchedule = $WithdrawalSchedule->first();
                     $WithdrawalSchedule->Status = 'W-R';
+                    $WithdrawalSchedule->UserName = $user->UserName;
                     $WithdrawalSchedule->save();
+                }
+
+                if($WithdrawalSchedule->isEmpty()) {
+                    WithdrawalSchedule::create([
+                        'ClientID' => $package->ClientID,
+                        'UserName' => $user->UserName,
+                        'DateWithdrawal' => Carbon::now()->toDateString(),
+                        'TimeWithdrawal' => Carbon::now()->toTimeString(),
+                        'Status' => 'W-R'
+                    ]);
                 }
 
                 DB::table('Packages')
