@@ -20,6 +20,7 @@ Route::patch('withdrawalschedule/{withdrawalSchedule}', WithdrawalSchedule\SetHo
 
 //? Collector
 Route::get('collector', Collector\ListPendingPackages::class);
+Route::get('collector/scanned', Collector\ListScanned::class);
 
 //? Depositary
 Route::get('depositary', Depositary\ListPendingPackages::class);
