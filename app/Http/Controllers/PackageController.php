@@ -213,7 +213,7 @@ class PackageController extends Controller
                 'PackageID' => $id,
             ]);
 
-            $package = Packages::where('GuideNumber', $id)
+            $package = Packages::where('PackageID', $id)
                         ->firstOrFail();
             return response()->json(new PackageResource($package));
         } catch (ModelNotFoundException $e){
