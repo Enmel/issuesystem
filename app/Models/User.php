@@ -16,7 +16,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $table = 'UserAccount';
 
     protected $fillable = [
-        'UserName', 'ApiToken', 'TypeUser'
+        'UserName', 'ApiToken', 'TypeUser', 'CountryID'
     ];
 
     /**
@@ -38,8 +38,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasMany(RoleByUser::class, 'UserName', 'UserName');
     }
 
-    public function Destination()
+    public function Country()
     {
-        return $this->hasMany(UserByDestination::class, 'UserName', 'UserName')->with('Destination.Township.Department');
+        return $this->hasOne(Country::class, 'CountryID', 'CountryID');
     }
 }

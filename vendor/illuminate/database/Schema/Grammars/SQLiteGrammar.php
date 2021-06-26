@@ -16,7 +16,7 @@ class SQLiteGrammar extends Grammar
      *
      * @var string[]
      */
-    protected $modifiers = ['VirtualAs', 'StoredAs', 'Nullable', 'Default', 'Increment'];
+    protected $modifiers = ['Primary', 'VirtualAs', 'StoredAs', 'Nullable', 'Default', 'Increment'];
 
     /**
      * The columns available as serials.
@@ -55,12 +55,11 @@ class SQLiteGrammar extends Grammar
      */
     public function compileCreate(Blueprint $blueprint, Fluent $command)
     {
-        return sprintf('%s table %s (%s%s%s)',
+        return sprintf('%s table %s (%s%s)',
             $blueprint->temporary ? 'create temporary' : 'create',
             $this->wrapTable($blueprint),
             implode(', ', $this->getColumns($blueprint)),
-            (string) $this->addForeignKeys($blueprint),
-            (string) $this->addPrimaryKeys($blueprint)
+            (string) $this->addForeignKeys($blueprint)
         );
     }
 
@@ -430,6 +429,17 @@ class SQLiteGrammar extends Grammar
     protected function typeString(Fluent $column)
     {
         return 'varchar';
+    }
+
+    /**
+     * Create the column definition for a tiny text type.
+     *
+     * @param  \Illuminate\Support\Fluent  $column
+     * @return string
+     */
+    protected function typeTinyText(Fluent $column)
+    {
+        return 'text';
     }
 
     /**
@@ -838,6 +848,66 @@ class SQLiteGrammar extends Grammar
     }
 
     /**
+     * Get the SQL for a primary column modifier.
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
+     * @param  \Illuminate\Support\Fluent  $column
+     * @return string|null
+     */
+    public function modifyPrimary(Blueprint $blueprint, Fluent $column)
+    {
+        if (! $column->autoIncrement && ! is_null($column->primary)) {
+            return ' primary key';
+        }
+    }
+
+    /**
+     * Get the SQL for an auto-increment column modifier.
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
+     * @param  \Illuminate\Support\Fluent  $column
+     * @return string|null
+     */
+    protected function modifyIncrement(Blueprint $blueprint, Fluent $column)
+    {
+        if (in_array($column->type, $this->serials) && $column->autoIncrement) {
+            return ' primary key autoincrement';
+        }
+    }
+
+    /**
+     * Get the SQL for a nullable column modifier.
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
+     * @param  \Illuminate\Support\Fluent  $column
+     * @return string|null
+     */
+    protected function modifyNullable(Blueprint $blueprint, Fluent $column)
+    {
+        if (is_null($column->virtualAs) && is_null($column->storedAs)) {
+            return $column->nullable ? '' : ' not null';
+        }
+
+        if ($column->nullable === false) {
+            return ' not null';
+        }
+    }
+
+    /**
+     * Get the SQL for a default column modifier.
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
+     * @param  \Illuminate\Support\Fluent  $column
+     * @return string|null
+     */
+    protected function modifyDefault(Blueprint $blueprint, Fluent $column)
+    {
+        if (! is_null($column->default) && is_null($column->virtualAs) && is_null($column->storedAs)) {
+            return ' default '.$this->getDefaultValue($column->default);
+        }
+    }
+
+    /**
      * Get the SQL for a generated virtual column modifier.
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
@@ -862,52 +932,6 @@ class SQLiteGrammar extends Grammar
     {
         if (! is_null($column->storedAs)) {
             return " as ({$column->storedAs}) stored";
-        }
-    }
-
-    /**
-     * Get the SQL for a nullable column modifier.
-     *
-     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
-     * @param  \Illuminate\Support\Fluent  $column
-     * @return string|null
-     */
-    protected function modifyNullable(Blueprint $blueprint, Fluent $column)
-    {
-        if (is_null($column->virtualAs) && is_null($column->storedAs)) {
-            return $column->nullable ? ' null' : ' not null';
-        }
-
-        if ($column->nullable === false) {
-            return ' not null';
-        }
-    }
-
-    /**
-     * Get the SQL for a default column modifier.
-     *
-     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
-     * @param  \Illuminate\Support\Fluent  $column
-     * @return string|null
-     */
-    protected function modifyDefault(Blueprint $blueprint, Fluent $column)
-    {
-        if (! is_null($column->default) && is_null($column->virtualAs) && is_null($column->storedAs)) {
-            return ' default '.$this->getDefaultValue($column->default);
-        }
-    }
-
-    /**
-     * Get the SQL for an auto-increment column modifier.
-     *
-     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
-     * @param  \Illuminate\Support\Fluent  $column
-     * @return string|null
-     */
-    protected function modifyIncrement(Blueprint $blueprint, Fluent $column)
-    {
-        if (in_array($column->type, $this->serials) && $column->autoIncrement) {
-            return ' primary key autoincrement';
         }
     }
 }
