@@ -9,37 +9,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Lumen\Auth\Authorizable;
 
+
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable, Authorizable, HasFactory;
 
-    protected $table = 'UserAccount';
+    protected $table = 'users';
+    public $timestamps = false;
 
     protected $fillable = [
-        'UserName', 'ApiToken', 'TypeUser', 'CountryID'
+        'name', 'password', 'email', 'picture_url', 'role', 'token'
     ];
-
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
+    
     protected $hidden = [
-        'UserPassword',
+        'password',
     ];
-
-    public function Type()
-    {
-        return $this->hasOne(TypeUser::class, 'TypeUsersID', 'TypeUser');
-    }
-
-    public function Role()
-    {
-        return $this->hasMany(RoleByUser::class, 'UserName', 'UserName');
-    }
-
-    public function Country()
-    {
-        return $this->hasOne(Country::class, 'CountryID', 'CountryID');
-    }
 }

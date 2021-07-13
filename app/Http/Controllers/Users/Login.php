@@ -1,22 +1,21 @@
 <?php
+namespace App\Http\Controllers\Users;
 
-namespace App\Http\Controllers;
-
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse as Response;
 use App\Models\User;
 use App\Http\Resources\User as ResourceUser;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;  
 
-class UserController extends Controller
+class Login extends Controller
 {
 
-    public function login(Request $request) : Response {
-
+    public function __invoke(Request $request)
+    {
         try {
-            $user = User::where('UserName', $request->username)
-                        ->where('UserPassword',md5($request->password))
+            $user = User::where('email', $request->email)
+                        ->where('password',md5($request->password))
                         ->firstOrFail();
             return response()->json(new ResourceUser($user));
         } catch (ModelNotFoundException $e){
