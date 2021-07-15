@@ -17,7 +17,7 @@ class Create extends Controller
                 'name' => $request->name,
                 'role' => $request->role,
                 'email' => $request->email,
-                'picture_url' => $request->picture_url ?? '',
+                'picture' => null,
                 'password' => md5($request->password),
                 'token' => md5(time()."{$request->email}{$request->password}")
             ]);
