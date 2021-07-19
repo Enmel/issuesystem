@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Users;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Http\Resources\User as ResourceUser;
+use App\Http\Resources\UserLogin as ResourceUser;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;  
 

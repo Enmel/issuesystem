@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Resources\Group;
+use App\Models\Member;
 use Illuminate\Support\Facades\Route;
 
 //? Users
@@ -12,8 +14,14 @@ Route::post('users/authenticate', Users\Login::class);
 //? Groups
 Route::get('groups', Groups\ListGroups::class);
 Route::post('groups', Groups\Create::class);
+Route::get('groups/{id}', Groups\Show::class);
 Route::put('groups/{id}', Groups\Update::class);
 Route::delete('groups/{id}', Groups\Remove::class);
+
+//? Members
+Route::get('groups/{groupID}/members', Members\ListMembers::class);
+Route::post('groups/{groupID}/members', Members\AddMembers::class);
+Route::delete('groups/{groupID}/members/{userID}', Members\Remove::class);
 
 //? Files
 Route::post('files', Files\Upload::class);

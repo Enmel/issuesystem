@@ -17,4 +17,9 @@ class Group extends Model
     {
         return $this->hasOne(File::class, "id", "picture");
     }
+
+    public function members()
+    {
+        return $this->hasMany(Member::class, "group_id", "id")->with('user');
+    }
 }
