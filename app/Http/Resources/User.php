@@ -12,7 +12,7 @@ class User extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'picture' => $this->picture ?? "https://ui-avatars.com/api/?background=random&name={$this->UserName}",
+            'picture' => $this->picture ?? "http://localhost/issuesystem/public/avatar?name={$this->name}",
             'role' => $this->role
         ];
     }

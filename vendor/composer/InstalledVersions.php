@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '9951f679389acf738fdcb855246662093ca017e8',
+    'reference' => '59e93019f44a3664b386b3805c2bbd49e6a97340',
     'name' => 'laravel/lumen',
   ),
   'versions' => 
@@ -414,7 +414,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '9951f679389acf738fdcb855246662093ca017e8',
+      'reference' => '59e93019f44a3664b386b3805c2bbd49e6a97340',
     ),
     'laravel/lumen-framework' => 
     array (
@@ -424,6 +424,15 @@ private static $installed = array (
       array (
       ),
       'reference' => '6ed02d4d1a6e203b9e896bd105b2e838866f2951',
+    ),
+    'lasserafn/php-initial-avatar-generator' => 
+    array (
+      'pretty_version' => '4.2.1',
+      'version' => '4.2.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '49d0b10cc8819af831e0f6fb1056a7d5ed9512d0',
     ),
     'lasserafn/php-initials' => 
     array (

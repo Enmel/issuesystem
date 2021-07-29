@@ -43,3 +43,6 @@ Route::post('errors/{errorID}/comment', ErrorComment\Create::class);
 
 //? Files
 Route::post('files', Files\Upload::class);
+
+//? Avatar Service
+Route::get('avatar', Avatar\Generate::class);
