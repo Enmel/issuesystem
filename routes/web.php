@@ -23,5 +23,23 @@ Route::get('groups/{groupID}/members', Members\ListMembers::class);
 Route::post('groups/{groupID}/members', Members\AddMembers::class);
 Route::delete('groups/{groupID}/members/{userID}', Members\Remove::class);
 
+//? Issues
+Route::get('issues', Issues\ListIssues::class);
+Route::get('issues/{issueID}', Issues\Show::class);
+Route::post('issues', Issues\Create::class);
+Route::post('issues/{issueID}/toggleState', Issues\ToggleState::class);
+
+//? IssueComment
+Route::post('issues/{issueID}/comment', IssuesComment\Create::class);
+
+//? Errors
+Route::get('errors', Errors\ListErrors::class);
+Route::get('errors/{errorID}', Errors\Show::class);
+Route::post('errors', Errors\Create::class);
+Route::post('errors/{errorID}/toggleState', Errors\ToggleState::class);
+
+//? ErrorComment
+Route::post('errors/{errorID}/comment', ErrorComment\Create::class);
+
 //? Files
 Route::post('files', Files\Upload::class);

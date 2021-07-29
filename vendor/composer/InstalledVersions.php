@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'fed9c046c47513cd30ed6109d832f2b8189f359d',
+    'reference' => '9951f679389acf738fdcb855246662093ca017e8',
     'name' => 'laravel/lumen',
   ),
   'versions' => 
@@ -138,6 +138,15 @@ private static $installed = array (
       array (
       ),
       'reference' => '7e279d2cd5d7fbb156ce46daada972355cea27bb',
+    ),
+    'guzzlehttp/psr7' => 
+    array (
+      'pretty_version' => '2.0.0',
+      'version' => '2.0.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '1dc8d9cba3897165e16d12bb13d813afb1eb3fe7',
     ),
     'hamcrest/hamcrest-php' => 
     array (
@@ -382,6 +391,15 @@ private static $installed = array (
       ),
       'reference' => 'c8b6c1871e852646e186723005a5ec3d1f3ac4e4',
     ),
+    'intervention/image' => 
+    array (
+      'pretty_version' => '2.6.1',
+      'version' => '2.6.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '0925f10b259679b5d8ca58f3a2add9255ffcda45',
+    ),
     'kodova/hamcrest-php' => 
     array (
       'replaced' => 
@@ -396,7 +414,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'fed9c046c47513cd30ed6109d832f2b8189f359d',
+      'reference' => '9951f679389acf738fdcb855246662093ca017e8',
     ),
     'laravel/lumen-framework' => 
     array (
@@ -406,6 +424,33 @@ private static $installed = array (
       array (
       ),
       'reference' => '6ed02d4d1a6e203b9e896bd105b2e838866f2951',
+    ),
+    'lasserafn/php-initials' => 
+    array (
+      'pretty_version' => '3.1',
+      'version' => '3.1.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'd287e1542687390eb68de779949bc0adc49e2d52',
+    ),
+    'lasserafn/php-string-script-language' => 
+    array (
+      'pretty_version' => '0.3',
+      'version' => '0.3.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '49a09d4a5e38c1e59a2656ac05b601d615c7cddb',
+    ),
+    'meyfa/php-svg' => 
+    array (
+      'pretty_version' => 'v0.9.1',
+      'version' => '0.9.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '34401edef1f724898f468f71b85505fbcc8351bb',
     ),
     'mockery/mockery' => 
     array (
@@ -480,6 +525,15 @@ private static $installed = array (
       array (
       ),
       'reference' => '06e2ebd25f2869e54a306dda991f7db58066f7f6',
+    ),
+    'overtrue/pinyin' => 
+    array (
+      'pretty_version' => '4.0.8',
+      'version' => '4.0.8.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '04bdb4d33d50e8fb1aa5a824064c5151c4b15dc2',
     ),
     'phar-io/manifest' => 
     array (
@@ -630,6 +684,38 @@ private static $installed = array (
         0 => '1.0',
       ),
     ),
+    'psr/http-factory' => 
+    array (
+      'pretty_version' => '1.0.1',
+      'version' => '1.0.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '12ac7fcd07e5b077433f5f2bee95b3a771bf61be',
+    ),
+    'psr/http-factory-implementation' => 
+    array (
+      'provided' => 
+      array (
+        0 => '1.0',
+      ),
+    ),
+    'psr/http-message' => 
+    array (
+      'pretty_version' => '1.0.1',
+      'version' => '1.0.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'f6561bf28d520154e4b0ec72be95418abe6d9363',
+    ),
+    'psr/http-message-implementation' => 
+    array (
+      'provided' => 
+      array (
+        0 => '1.0',
+      ),
+    ),
     'psr/log' => 
     array (
       'pretty_version' => '1.1.4',
@@ -655,6 +741,15 @@ private static $installed = array (
       array (
       ),
       'reference' => '408d5eafb83c57f6365a3ca330ff23aa4a5fa39b',
+    ),
+    'ralouphie/getallheaders' => 
+    array (
+      'pretty_version' => '3.0.3',
+      'version' => '3.0.3.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '120b605dfeb996808c31b6477290a714d356e822',
     ),
     'ramsey/collection' => 
     array (
