@@ -24,4 +24,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $hidden = [
         'password',
     ];
+
+    public function getIsAdminAttribute()
+    {
+        return (bool) $this->role === 'Admin' || $this->role === 'SuperAdmin';
+    }
+
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'users_by_group');
+    }
 }
