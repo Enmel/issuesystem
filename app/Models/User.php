@@ -8,7 +8,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Lumen\Auth\Authorizable;
-
+use PhpParser\Node\Expr\FuncCall;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
@@ -33,5 +33,17 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function groups()
     {
         return $this->belongsToMany(Group::class, 'users_by_group');
+    }
+
+    public function groupsErrors()
+    {
+        return $this->belongsToMany(Group::class, 'users_by_group')->with('errors');
+        
+    }
+
+    public function groupsIssues()
+    {
+        return $this->belongsToMany(Group::class, 'users_by_group')->with('issues');
+        
     }
 }

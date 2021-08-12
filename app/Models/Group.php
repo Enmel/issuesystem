@@ -22,4 +22,14 @@ class Group extends Model
     {
         return $this->hasMany(Member::class, "group_id", "id")->with('user');
     }
+
+    public function errors()
+    {
+        return $this->hasMany(Error::class, "group", "id");
+    }
+
+    public function issues()
+    {
+        return $this->hasMany(Issue::class, "group", "id");
+    }
 }
