@@ -42,7 +42,7 @@ class ListIssues extends Controller
         $text = strtolower($text);
 
         return $collection->filter(function ($value) use ($text) {
-            return str_contains(strtolower($value->name), $text);
+            return str_contains(strtolower($value->title), $text);
         });
     }
 }
